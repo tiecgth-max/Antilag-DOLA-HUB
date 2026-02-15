@@ -13,7 +13,7 @@ local Window = Library:Window({
     },
     CloseUIButton = {
         Enabled = true, -- เปิดใช้งานปุ่มปิดลอย
-        Text = "X" -- ข้อความบนปุ่มปิด
+        Text = "D" -- ข้อความบนปุ่มปิด
     }
 })
 
@@ -143,14 +143,6 @@ Extra:Section({
     Title = "ลดกราฟฟิก"
 })
 
-local Extra = Window:Tab({
-    Title = "Aantilag", Icon = "tag"
-}) do
-
-Extra:Section({
-    Title = "ลดกราฟฟิก"
-})
-
 Extra:Button({
     Title = "ภาพดินน้ำมัน",
     Desc = "เปิดโหมดลื่นทุกแมพ",
@@ -259,7 +251,14 @@ end
 
 -- แจ้งเตือนตอนโหลดเสร็จ
 Window:Notify({
-    Title = "x2zu",
+    Title = "DOLA HUB",
+    Desc = "All components loaded successfully! Credits leak: @x2zu",
+    Time = 4
+})end
+
+-- แจ้งเตือนตอนโหลดเสร็จ
+Window:Notify({
+    Title = "DOLA HUB",
     Desc = "All components loaded successfully! Credits leak: @x2zu",
     Time = 4
 })
