@@ -1,0 +1,240 @@
+-- โหลด UI Library จาก GitHub แล้วรันโค้ด
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
+
+-- สร้างหน้าต่างหลักของ UI
+local Window = Library:Window({
+    Title = "DOLA HUB", -- ชื่อหน้าต่าง
+    Desc = "Antilag", -- คำอธิบายใต้ชื่อ
+    Icon = 105059922903197, -- ไอคอน (Asset ID)
+    Theme = "Dark", -- ธีมสี (Dark/Light แล้วแต่ Library รองรับ)
+    Config = {
+        Keybind = Enum.KeyCode.LeftControl, -- ปุ่มเปิด/ปิด UI
+        Size = UDim2.new(0, 500, 0, 400) -- ขนาดหน้าต่าง
+    },
+    CloseUIButton = {
+        Enabled = true, -- เปิดใช้งานปุ่มปิดลอย
+        Text = "X" -- ข้อความบนปุ่มปิด
+    }
+})
+
+-- สร้างเส้นแบ่งแนวตั้งด้าน Sidebar
+local SidebarLine = Instance.new("Frame") -- สร้าง Frame ใหม่
+SidebarLine.Size = UDim2.new(0, 1, 1, 0) -- กว้าง 1px สูงเต็มจอ
+SidebarLine.Position = UDim2.new(0, 140, 0, 0) -- ตำแหน่งเส้น
+SidebarLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- สีเส้น
+SidebarLine.BorderSizePixel = 0 -- ไม่มีขอบ
+SidebarLine.ZIndex = 5 -- ลำดับการแสดงผล
+SidebarLine.Name = "SidebarLine" -- ตั้งชื่อ
+SidebarLine.Parent = game:GetService("CoreGui") -- ใส่เข้า CoreGui
+
+-- สร้าง Tab หลัก
+local Tab = Window:Tab({
+    Title = "Main", Icon = "star"
+}) do
+
+-- สร้าง Section (หัวข้อย่อย)
+Tab:Section({
+    Title = "All UI Components"
+})
+
+-- Toggle (สวิตช์ เปิด/ปิด)
+Tab:Toggle({
+    Title = "Enable Feature", -- ชื่อ
+    Desc = "Toggle to enable or disable the feature", -- คำอธิบาย
+    Value = false, -- ค่าเริ่มต้น
+    Callback = function(v) -- เมื่อกดจะส่งค่า true/false
+    print("Toggle:", v)
+    end
+})
+
+-- ปุ่ม Button
+Tab:Button({
+    Title = "Run Action",
+    Desc = "Click to perform something",
+    Callback = function()
+    print("Button clicked!")
+    Window:Notify({
+-- แจ้งเตือนเด้งขึ้น
+        Title = "Button",
+        Desc = "Action performed successfully.",
+        Time = 3 -- แสดง 3 วินาที
+    })
+    end
+})
+
+-- Textbox (ช่องพิมพ์ข้อความ)
+Tab:Textbox({
+    Title = "Input Text",
+    Desc = "Type something here",
+    Placeholder = "Enter value", -- ข้อความจางๆ
+    Value = "", -- ค่าเริ่มต้น
+    ClearTextOnFocus = false, -- ไม่ลบข้อความตอนคลิก
+    Callback = function(text)
+    print("Textbox value:", text)
+    end
+})
+
+-- Slider (แถบเลื่อนค่า)
+Tab:Slider({
+    Title = "Set Speed",
+    Min = 0, -- ค่าต่ำสุด
+    Max = 100, -- ค่าสูงสุด
+    Rounding = 0, -- ปัดเศษ
+    Value = 25, -- ค่าเริ่มต้น
+    Callback = function(val)
+    print("Slider:", val)
+    end
+})
+
+-- Dropdown (เมนูเลือกค่า)
+Tab:Dropdown({
+    Title = "Choose Option",
+    List = {
+        "Option 1", "Option 2", "Option 3"
+    }, -- ตัวเลือก
+    Value = "Option 1", -- ค่าเริ่มต้น
+    Callback = function(choice)
+    print("Selected:", choice)
+    end
+})
+
+-- Code Display (แสดงโค้ด)
+local CodeBlock = Tab:Code({
+    Title = "Example Code",
+    Code = "-- This is a code preview\nprint('Hello world')" -- โค้ดตัวอย่าง
+})
+
+-- อัปเดตโค้ดหลัง 5 วินาที
+task.delay(5, function()
+    CodeBlock:SetCode("-- Updated!\nprint('New content loaded')")
+    end)
+end
+
+-- เส้นแบ่งแนวนอน
+Window:Line()
+
+-- Tab ที่สอง
+local Extra = Window:Tab({
+    Title = "Extra", Icon = "tag"
+}) do
+Extra:Section({
+    Title = "About"
+})
+Extra:Button({
+    Title = "Show Message",
+    Desc = "Display a popup",
+    Callback = function()
+    Window:Notify({
+        Title = "Fluent UI",
+        Desc = "Everything works fine!",
+        Time = 3
+    })
+    end
+})
+end
+
+Window:Line()
+
+local Extra = Window:Tab({
+    Title = "Aantilag", Icon = "tag"
+}) do
+
+Extra:Section({
+    Title = "ลดกราฟฟิก"
+})
+
+Extra:Button({
+    Title = "ภาพดินน้ำมัน",
+    Desc = "เปิดโหมดลื่น",
+    Callback = function()
+
+        --// SERVICES
+        local Players = game:GetService("Players")
+        local RunService = game:GetService("RunService")
+        local Lighting = game:GetService("Lighting")
+
+        local player = Players.LocalPlayer
+        local MAX_DISTANCE = 120
+
+        --// ลบวัตถุ
+        local REMOVE_NAMES = {
+            ["Finger_Coral_1"] = true,
+            ["SmallRock"] = true
+        }
+
+        local function removeObjects(obj)
+            if REMOVE_NAMES[obj.Name] then
+                obj:Destroy()
+            end
+        end
+
+        for _, obj in pairs(workspace:GetDescendants()) do
+            removeObjects(obj)
+        end
+
+        workspace.DescendantAdded:Connect(removeObjects)
+
+        --// ลดกราฟิก
+        pcall(function()
+            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+        end)
+
+        Lighting.GlobalShadows = false
+        Lighting.FogEnd = 100000
+
+        --// ซ่อนของไกล
+        RunService.RenderStepped:Connect(function()
+            if not player.Character then return end
+            local root = player.Character:FindFirstChild("HumanoidRootPart")
+            if not root then return end
+            
+            local pos = root.Position
+
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("BasePart") then
+                    local dist = (obj.Position - pos).Magnitude
+                    obj.LocalTransparencyModifier = (dist > MAX_DISTANCE) and 1 or 0
+                end
+            end
+        end)
+
+        Window:Notify({
+            Title = "Aantilag",
+            Desc = "เปิดโหมดลื่นแล้ว!",
+            Time = 3
+        })
+
+    end
+})
+
+end
+
+Window:Line()
+
+
+-- Tab Settings
+local Extra = Window:Tab({
+    Title = "Settings", Icon = "wrench"
+}) do
+Extra:Section({
+    Title = "Config"
+})
+Extra:Button({
+    Title = "Show Message",
+    Desc = "Display a popup",
+    Callback = function()
+    Window:Notify({
+        Title = "Fluent UI",
+        Desc = "Everything works fine!",
+        Time = 3
+    })
+    end
+})
+end
+
+-- แจ้งเตือนตอนโหลดเสร็จ
+Window:Notify({
+    Title = "x2zu",
+    Desc = "All components loaded successfully! Credits leak: @x2zu",
+    Time = 4
+})
