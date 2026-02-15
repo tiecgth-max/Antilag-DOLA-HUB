@@ -143,64 +143,90 @@ Extra:Section({
     Title = "ลดกราฟฟิก"
 })
 
+local Extra = Window:Tab({
+    Title = "Aantilag", Icon = "tag"
+}) do
+
+Extra:Section({
+    Title = "ลดกราฟฟิก"
+})
+
 Extra:Button({
     Title = "ภาพดินน้ำมัน",
-    Desc = "เปิดโหมดลื่น",
+    Desc = "เปิดโหมดลื่นทุกแมพ",
     Callback = function()
 
-        --// SERVICES
-        local Players = game:GetService("Players")
-        local RunService = game:GetService("RunService")
         local Lighting = game:GetService("Lighting")
+        local RunService = game:GetService("RunService")
+        local Terrain = workspace:FindFirstChildOfClass("Terrain")
 
-        local player = Players.LocalPlayer
-        local MAX_DISTANCE = 120
+        -- ป้องกันกดซ้ำ
+        if _G.FPSBoost then return end
+        _G.FPSBoost = true
 
-        --// ลบวัตถุ
-        local REMOVE_NAMES = {
-            ["Finger_Coral_1"] = true,
-            ["SmallRock"] = true
-        }
-
-        local function removeObjects(obj)
-            if REMOVE_NAMES[obj.Name] then
-                obj:Destroy()
-            end
-        end
-
-        for _, obj in pairs(workspace:GetDescendants()) do
-            removeObjects(obj)
-        end
-
-        workspace.DescendantAdded:Connect(removeObjects)
-
-        --// ลดกราฟิก
+        -- 1️⃣ ลดกราฟิกสุด
         pcall(function()
             settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
         end)
 
+        -- 2️⃣ ปิดเงา / หมอก / แสง
         Lighting.GlobalShadows = false
-        Lighting.FogEnd = 100000
+        Lighting.FogStart = 0
+        Lighting.FogEnd = 9e9
+        Lighting.Brightness = 0
+        Lighting.EnvironmentDiffuseScale = 0
+        Lighting.EnvironmentSpecularScale = 0
 
-        --// ซ่อนของไกล
-        RunService.RenderStepped:Connect(function()
-            if not player.Character then return end
-            local root = player.Character:FindFirstChild("HumanoidRootPart")
-            if not root then return end
-            
-            local pos = root.Position
-
-            for _, obj in pairs(workspace:GetDescendants()) do
-                if obj:IsA("BasePart") then
-                    local dist = (obj.Position - pos).Magnitude
-                    obj.LocalTransparencyModifier = (dist > MAX_DISTANCE) and 1 or 0
-                end
+        -- 3️⃣ ลบท้องฟ้า + เอฟเฟกต์ทั้งหมด
+        for _, v in ipairs(Lighting:GetDescendants()) do
+            if v:IsA("Sky")
+            or v:IsA("Atmosphere")
+            or v:IsA("BloomEffect")
+            or v:IsA("BlurEffect")
+            or v:IsA("ColorCorrectionEffect")
+            or v:IsA("SunRaysEffect")
+            or v:IsA("DepthOfFieldEffect") then
+                v:Destroy()
             end
-        end)
+        end
+
+        -- 4️⃣ ลบ Particle / Trail / Beam / Smoke / Fire
+        local function removeVFX(obj)
+            if obj:IsA("ParticleEmitter")
+            or obj:IsA("Trail")
+            or obj:IsA("Beam")
+            or obj:IsA("Smoke")
+            or obj:IsA("Fire")
+            or obj:IsA("Sparkles") then
+                obj.Enabled = false
+                obj:Destroy()
+            end
+        end
+
+        for _, v in ipairs(workspace:GetDescendants()) do
+            removeVFX(v)
+            if v:IsA("BasePart") then
+                v.Material = Enum.Material.SmoothPlastic
+                v.Reflectance = 0
+                v.CastShadow = false
+            elseif v:IsA("Decal") or v:IsA("Texture") then
+                v:Destroy()
+            end
+        end
+
+        workspace.DescendantAdded:Connect(removeVFX)
+
+        -- 5️⃣ ลดเอฟเฟกต์น้ำ
+        if Terrain then
+            Terrain.WaterWaveSize = 0
+            Terrain.WaterWaveSpeed = 0
+            Terrain.WaterReflectance = 0
+            Terrain.WaterTransparency = 0
+        end
 
         Window:Notify({
             Title = "Aantilag",
-            Desc = "เปิดโหมดลื่นแล้ว!",
+            Desc = "เปิดโหมดลื่นทุกแมพแล้ว!",
             Time = 3
         })
 
@@ -208,7 +234,6 @@ Extra:Button({
 })
 
 end
-
 Window:Line()
 
 
